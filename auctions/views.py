@@ -1,21 +1,24 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
+from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.forms import ModelForm
+from django import forms
 
 
 from .models import User, Listings
 
-class NewListingForm(ModelForm):
-    class meta:
-        model: Listings
-        fields: ['author', 'title', 'image', 'image', 'starting_bid', 'created', 'description']
+class NewListingForm(forms.Form):
+    title = forms.CharField()
+    image = forms.URLField()
+    starting_bid = forms.IntegerField(min_value=5.00)
+    description = forms.CharField(widget=forms.Textarea)
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "listings": Listings.objects.all()
+    })
 
 
 def login_view(request):
@@ -69,13 +72,33 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-def listings(request):
+
+def new_listing(request):
     if request.method == "POST":
         form = NewListingForm(request.POST)
-        # STOPPED HERE
         if form.is_valid():
-            return render(request, "auctions/index.html")
+            subject = form.cleaned_data['title']
+            image = form.cleaned_data['image']
+            starting_bid = form.cleaned_data['starting_bid']
+            cc_myself = form.cleaned_data['description']
+
+            # save_f(title, image, starting_bid, description)
+
+            return HttpResponseRedirect(reverse("active_listings"))
+        else:
+            return render(request, "auctions/new.html",{
+                "form": form
+            })
     else:
-        return render(request, "auctions/listings.html",{
+        return render(request, "auctions/new.html",{
             "form": NewListingForm()
         })
+
+
+# def active_listings(request):
+
+
+# def categories(request):
+
+
+# def watchlist(request):

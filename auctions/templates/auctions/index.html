@@ -1,7 +1,11 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>Active Listings:</h2>
 
-    TODO:
+    <ul>
+        {% for active in listings %}
+            <li> {{ active.title }} {{ flight.image }}  {{ flight.description }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
