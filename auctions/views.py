@@ -6,14 +6,20 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
 
+from .models import *
 
-from .models import User, Listings
+class NewCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ["author", "message"]
+        widgets = {
+        }
 
-class NewListingForm(forms.Form):
-    title = forms.CharField()
-    image = forms.URLField()
-    starting_bid = forms.IntegerField(min_value=5.00)
-    description = forms.CharField(widget=forms.Textarea)
+
+class NewListingForm(forms.ModelForm):
+    # class Meta:
+    #     model =
+    pass
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -75,23 +81,22 @@ def register(request):
 
 def new_listing(request):
     if request.method == "POST":
-        form = NewListingForm(request.POST)
+        form = NewCommentForm(request.POST)
         if form.is_valid():
-            subject = form.cleaned_data['title']
-            image = form.cleaned_data['image']
-            starting_bid = form.cleaned_data['starting_bid']
-            cc_myself = form.cleaned_data['description']
-
+            author = form.cleaned_data['author']
+            message = form.cleaned_data['message']
+            #cc_myself = form.cleaned_data['description']
+            f = form.save()
             # save_f(title, image, starting_bid, description)
 
-            return HttpResponseRedirect(reverse("active_listings"))
+            return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/new.html",{
                 "form": form
             })
     else:
         return render(request, "auctions/new.html",{
-            "form": NewListingForm()
+            "form": NewCommentForm()
         })
 
 

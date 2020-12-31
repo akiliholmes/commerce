@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
+
 
 class User(AbstractUser):
     pass
@@ -49,7 +51,7 @@ class Bids(models.Model):
 
 class Comments(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    published = models.DateField()
+    published = models.DateTimeField( auto_now_add=True)
     message = models.TextField(max_length=256)
 
     def __str__(self):
