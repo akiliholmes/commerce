@@ -6,17 +6,13 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
 
-from .models import *
 
-class NewCommentForm(forms.ModelForm):
-    class Meta:
-        model = Comments
-        fields = ["author", "message"]
-        widgets = {
-        }
+class NewCommentForm(forms.Form):
+        author = forms.
 
 
-class NewListingForm(forms.ModelForm):
+
+class NewListingForm(forms.Form):
     # class Meta:
     #     model =
     pass
@@ -83,7 +79,6 @@ def new_listing(request):
     if request.method == "POST":
         form = NewCommentForm(request.POST)
         if form.is_valid():
-            author = form.cleaned_data['author']
             message = form.cleaned_data['message']
             #cc_myself = form.cleaned_data['description']
             f = form.save()

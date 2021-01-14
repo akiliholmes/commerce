@@ -42,6 +42,7 @@ class Listings(models.Model):
 
 
 class Bids(models.Model):
+    bidder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     previous = models.IntegerField()
     current = models.IntegerField()
     starting = models.IntegerField()
@@ -55,4 +56,4 @@ class Comments(models.Model):
     message = models.TextField(max_length=256)
 
     def __str__(self):
-        return f"{self.author} {self.published}"
+        return f"{self.author} {self.published} {self.message}"
