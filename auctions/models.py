@@ -1,56 +1,46 @@
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 class User(AbstractUser):
     pass
 
-class Auctions(models.Model):
-    pass
+class Category(models.Model):
+    category = models.CharField(max_length=60)
 
-class Listings(models.Model):
-    FASHION = 'FS'
-    TOYS = 'TY'
-    ELECTRONICS = 'EE'
-    HOME = 'HM'
-    GARDEN = 'GR'
-    CATEGORY_CHOICES = [
-        (FASHION, 'Fashion'),
-        (TOYS, 'Toys'),
-        (ELECTRONICS, 'Electronics'),
-        (HOME, 'Home'),
-        (GARDEN, 'Garden'),
-    ]
+    def __str__(self):
+        return f"{self.category}"
+
+class Listing(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
-    image = models.URLField(default=None)
-    category = models.CharField(
-        max_length=2,
-        choices=CATEGORY_CHOICES,
-        default=ELECTRONICS,
-    )
-    starting_bid = models.IntegerField(default=5.00)
-    published = models.DateField(auto_now_add=False)
+    image = models.ImageField(upload_to="images/")
+    published = models.DateTimeField(default=timezone.now)
     description = models.TextField(max_length=256)
-    ended = models.BooleanField(default=None)
-    watchlist = models.BooleanField(default=False)
+    currentBid = models.FloatField(blank=True, null=True)
+    startingBid = models.FloatField()
+    ended = models.BooleanField(default=False)
+    watchlist = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, )
 
     def __str__(self):
-        return f"{self.author} {self.title} {self.published}"
+        return f"{self.title} {self.currentBid}"
 
 
-class Bids(models.Model):
-    previous = models.IntegerField()
-    current = models.IntegerField()
-    starting = models.IntegerField()
+class Bid(models.Model):
+    bidder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    previousBid = models.IntegerField()
+    currentBid = models.IntegerField()
+    newBid = models.IntegerField()
 
     def __str__(self):
-        return f"{self.current} {self.starting}"
+        return f"{self.currentBid}"
 
-class Comments(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    published = models.DateField()
+class Comment(models.Model):
+    commenter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    published = models.DateTimeField(default=timezone.now)
     message = models.TextField(max_length=256)
 
     def __str__(self):
-        return f"{self.author} {self.published}"
+        return f"{self.message}"

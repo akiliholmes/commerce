@@ -5,15 +5,25 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
+from django.forms import ModelForm
 
+from .models import *
 
-from .models import User, Listings
+class NewListingForm(ModelForm):
+    class Meta:
+        model = Listing
+        fields = ['title', 'image', 'description', 'startingBid']
 
-class NewListingForm(forms.Form):
-    title = forms.CharField()
-    image = forms.URLField()
-    starting_bid = forms.IntegerField(min_value=5.00)
-    description = forms.CharField(widget=forms.Textarea)
+class NewBidForm(ModelForm):
+    class Meta:
+        model = Bid
+        fields = ['newBid']
+
+class NewCommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['message']
+
 
 def index(request):
     return render(request, "auctions/index.html", {
