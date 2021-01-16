@@ -15,7 +15,7 @@ class Category(models.Model):
 class Listing(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="author_list")
     title = models.CharField(max_length=64)
-    image = models.ImageField(upload_to="images/")
+    image = models.URLField()
     published = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category_list")
     description = models.TextField(max_length=256)

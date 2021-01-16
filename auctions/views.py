@@ -27,7 +27,7 @@ class NewCommentForm(ModelForm):
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listings.objects.all()
+        "listings": Listing.objects.all()
     })
 
 
