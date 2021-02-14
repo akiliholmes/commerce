@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+<!-- details for listing  -->
+{% block body %}
+
+<h2>{{listing.title}}</h2>
+
+<div class="container">
+  <div class="row">
+{{if listing}}
+  <ul class="list-group list-group-flush">
+    {% for details in listing %}
+
+{% endblock %}

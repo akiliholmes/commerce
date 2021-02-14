@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -85,27 +85,29 @@ def register(request):
 
 def new_listing(request):
     if request.method == "POST":
-        form = NewListingForm(request.POST)
+        form = NewCommentForm(request.POST)
         if form.is_valid():
-            subject = form.cleaned_data['title']
-            image = form.cleaned_data['image']
-            starting_bid = form.cleaned_data['starting_bid']
-            cc_myself = form.cleaned_data['description']
-
+            message = form.cleaned_data['message']
+            #cc_myself = form.cleaned_data['description']
+            f = form.save()
             # save_f(title, image, starting_bid, description)
 
-            return HttpResponseRedirect(reverse("active_listings"))
+            return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/new.html",{
                 "form": form
             })
     else:
         return render(request, "auctions/new.html",{
-            "form": NewListingForm()
+            "form": NewCommentForm()
         })
 
 
-# def active_listings(request):
+def detail_view(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    return render(request, 'auctions/detail.html', {
+    'listing': listing
+    })
 
 
 # def categories(request):
