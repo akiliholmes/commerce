@@ -19,7 +19,6 @@ class Listing(models.Model):
     published = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category_list")
     description = models.TextField(max_length=256)
-    currentBid = models.FloatField(blank=True, null=True)
     startingBid = models.FloatField()
     ended = models.BooleanField(default=False)
     watchlist = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="watch_list")
