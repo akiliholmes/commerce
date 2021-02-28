@@ -6,16 +6,18 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      {{if listing}}
-  <ul class="list-group list-group-flush">
-    {% for details in listing %}
-      <li class="list-group-item">{{details.title}}</li>
-      <li class="list-group-item">{{details.image}}</li>
-      <li class="list-group-item">{{details.description}}</li>
-      <li class="list-group-item">{{details.title}}</li>
-      <li class="list-group-item">{{details.title}}</li>
-</ul>
-</div>
-</div>
+      {% if listing %}
+      <ul class="list-group list-group-flush">
+        {% for details in listing %}
+        <li class="list-group-item">{{details.title}}</li>
+        <li class="list-group-item">{{details.image}}</li>
+        <li class="list-group-item">{{details.description}}</li>
+        <li class="list-group-item">{{details.startingBid}}</li>
+        <li class="list-group-item">{{details.category}}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}
