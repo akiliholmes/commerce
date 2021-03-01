@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_list_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -12,12 +12,12 @@ from .models import *
 class NewListingForm(ModelForm):
     class Meta:
         model = Listing
-        fields = ['title', 'image', 'description', 'startingBid']
+        fields = ['title', 'image', 'description', 'starting_bid']
 
 class NewBidForm(ModelForm):
     class Meta:
         model = Bid
-        fields = ['newBid']
+        fields = ['new_bid']
 
 class NewCommentForm(ModelForm):
     class Meta:
@@ -51,6 +51,7 @@ def login_view(request):
         return render(request, "auctions/login.html")
 
 
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
@@ -82,7 +83,6 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-
 def new_listing(request):
     if request.method == "POST":
         form = NewCommentForm(request.POST)
@@ -104,10 +104,11 @@ def new_listing(request):
 
 
 def detail_view(request, listing_id):
-    listing = get_object_or_404(Listing, pk=listing_id)
-    return render(request, 'auctions/detail.html', {
-    'listing': listing
-    })
+    try:
+        listing = get_list_or_404(Listing, pk=listing_id)
+        return render(request, 'auctions/detail.html', {'listing': listing})
+    except Listing.DoesNotExist:
+        return render(request, 'auctions/detail.html', {'error': 'No listing found.'})
 
 
 # def categories(request):

@@ -3,16 +3,19 @@
 <!-- details for listing  -->
 {% block body %}
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col">
-      {% if listing %}
+      {% if error %}
+        {{error}}
+
+      {% else %}
       <ul class="list-group list-group-flush">
         {% for details in listing %}
         <li class="list-group-item">{{details.title}}</li>
         <li class="list-group-item">{{details.image}}</li>
         <li class="list-group-item">{{details.description}}</li>
-        <li class="list-group-item">{{details.startingBid}}</li>
+        <li class="list-group-item">{{details.starting_bid}}</li>
         <li class="list-group-item">{{details.category}}</li>
         {% endfor %}
       </ul>

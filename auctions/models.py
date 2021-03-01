@@ -19,22 +19,22 @@ class Listing(models.Model):
     pub_date = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category_list")
     description = models.TextField(max_length=256)
-    startingBid = models.FloatField()
+    starting_bid = models.FloatField()
     ended = models.BooleanField(default=False)
     watchlist = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="watch_list")
 
     def __str__(self):
-        return f"{self.title} {self.image} {self.description} {self.startingBid} {self.category}"
+        return f"{self.title} {self.image} {self.description} {self.starting_bid} {self.category}"
 
 
 class Bid(models.Model):
     bidder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
-    newBid = models.IntegerField()
+    new_bid = models.IntegerField()
 
     def __str__(self):
-        return f"{self.newBid}"
+        return f"{self.new_bid}"
 
 class Comment(models.Model):
     commenter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
