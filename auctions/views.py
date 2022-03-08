@@ -1,3 +1,4 @@
+from itertools import count
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
@@ -94,7 +95,7 @@ def new_listing(request):
 
             # save_f(title, image, starting_bid, description)
 
-            return HttpResponseRedirect(reverse("active_listings"))
+            return HttpResponseRedirect(reverse("new_listings"))
         else:
             return render(request, "auctions/new.html",{
                 "form": form
@@ -105,10 +106,19 @@ def new_listing(request):
         })
 
 
-# def active_listings(request):
+def listing_details(request, listing_id):
+    listing = Listing.objects.get(id=listing_id)
+    return render(request, "auctions/listing.html", {
+        "listing": listing
+    })
 
 
-# def categories(request):
+def all_categories(request):
+    totals = Category.objects.all().annotate(count('self.categories', distinct=True))
+    return render(request, "auctions/all-categories.html", {
+        "categories": Category.objects.all(),
+        "quanties": totals
+        })
 
-
-# def watchlist(request):
+def watchlist(request):
+    pass
