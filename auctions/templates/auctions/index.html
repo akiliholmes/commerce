@@ -8,7 +8,8 @@
   <div class="row">
     {% for listing in listings %}
     <div class="col">
-      <div class="card h-100">
+      <div class="row row-cols-1 row-cols-md-3 g-4">    
+         <div class="card">
       <img src="{{ listing.image }}" class="card-img-top" alt="image">
       <div class="card-body">
             <h5 class="card-title">{{ listing.title }}</h5>
@@ -19,8 +20,8 @@
           </div>
         </div>
       </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
-
 {% endblock %}
+  
