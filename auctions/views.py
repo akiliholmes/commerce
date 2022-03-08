@@ -109,9 +109,9 @@ def new_listing(request):
 
 
 def listing_details(request, listing_id):
-    context = Listings.objects.get(listing_id)
+    details = Listings.objects.get(id=listing_id)
     return render(request, "auctions/listing.html", {
-        "listing": context
+        "listing": details
     })
 
 
