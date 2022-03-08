@@ -4,7 +4,7 @@ from .models import *
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
-admin.site.register(Listing)
-admin.site.register(Category)
+admin.site.register(Listings)
+admin.site.register(Categories)
 admin.site.register(Comment)
 admin.site.register(Bid)

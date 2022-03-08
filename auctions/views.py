@@ -1,6 +1,6 @@
-from itertools import count
+from django.db.models import Count
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError, models
+from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -12,7 +12,7 @@ from .models import *
 
 class NewListingForm(ModelForm):
     class Meta:
-        model = Listing
+        model = Listings
         fields = ['title', 'image', 'description', 'startingBid']
 
 class NewBidForm(ModelForm):
@@ -27,8 +27,10 @@ class NewCommentForm(ModelForm):
 
 
 def index(request):
+    listings = Listings.objects.all()
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": listings
+
     })
 
 
@@ -107,17 +109,17 @@ def new_listing(request):
 
 
 def listing_details(request, listing_id):
-    listing = Listing.objects.get(id=listing_id)
-    return render(request, "auctions/listing.html", {
+    listing = Listings.objects.get(id=listing_id)
+    return render(request, listing, "auctions/listing.html", {
         "listing": listing
     })
 
 
 def all_categories(request):
-    totals = Category.objects.all().annotate(count('self.categories', distinct=True))
+    num_cats = Categories.objects.all().annotate(cat_total=Count('name'))
     return render(request, "auctions/all-categories.html", {
-        "categories": Category.objects.all(),
-        "quanties": totals
+        "categories": Categories.objects.all()
+        #"quantities": Categories.name__count
         })
 
 def watchlist(request):
