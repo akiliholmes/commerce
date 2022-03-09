@@ -7,10 +7,10 @@ class User(AbstractUser):
     pass
 
 class Categories(models.Model):
-    categories = models.CharField(max_length=60)
+    name = models.CharField(max_length=60)
 
     def __str__(self):
-        return f"{self.categories}"
+        return f"{self.name}"
 
 class Listings(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="author_list")

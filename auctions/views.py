@@ -116,10 +116,10 @@ def listing_details(request, listing_id):
 
 
 def all_categories(request):
-    num_cats = Categories.objects.all().annotate(cat_total=Count('name'))
+    num_listing = Listings.objects.values('categories').annotate(cat_total=Count('categories'))
     return render(request, "auctions/all-categories.html", {
-        "categories": Categories.objects.all()
-        #"quantities": Categories.name__count
+        "categories": Categories.objects.all(),
+        "quantity": num_listing
         })
 
 def watchlist(request):
