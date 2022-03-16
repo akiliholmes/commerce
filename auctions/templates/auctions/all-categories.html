@@ -7,8 +7,8 @@
 <ul class="list-group">
     {% for type in categories %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
-      <h3>{{ type.name }}</h3>
-      <a href="{% url 'listing_details' type.id %}" class="btn btn-primary"><span class="badge bg-primary rounded-pill">{{quantity}}</span></a>
+      <h3>{{ type.name }}</h3> 
+      <a href="{% url 'listing_details' type.id %}" class="btn btn-primary"><span class="badge bg-primary rounded-pill"><h4>{{quantity}}</h4></span></a>
     </li>
     {% endfor %}
   </ul>

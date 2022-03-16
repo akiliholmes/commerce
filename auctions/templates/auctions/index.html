@@ -5,19 +5,18 @@
 <h2>Active Listings:</h2>
 
 <div class="container">
-  <div class="row">
+  <div class="row row-cols-auto row-cols-4">
     {% for listing in listings %}
-    <div class="col">
-      <div class="row row-cols-1 row-cols-md-3 g-4">    
-         <div class="card">
-      <img src="{{ listing.image }}" class="card-img-top" alt="image">
-      <div class="card-body">
+    <div class="col pb-2">
+         <div class="card" style="width: 16rem;">
+            <img src="{{ listing.image }}" class="card-img-top" style="height: 200px;" alt="image">
+            <div class="card-body">
             <h5 class="card-title">{{ listing.title }}</h5>
             <p class="card-text"> {{ listing.description }} </p>
-          </div>
-          <div class="card-footer">
+            </div>
+            <div class="card-footer">
             <a href="{% url 'listing_details' listing.id %}" class="btn btn-primary">View Listing</a>
-          </div>
+            </div>
         </div>
       </div>
     {% endfor %}
