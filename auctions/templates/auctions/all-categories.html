@@ -5,12 +5,15 @@
 <h2>Categories</h2>
 
 <ul class="list-group">
-    {% for type in categories %}
+  {% for cat in cat_objs %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
-      <h3>{{ type.name }}</h3> 
-      <a href="{% url 'listing_details' type.id %}" class="btn btn-primary"><span class="badge bg-primary rounded-pill"><h4>{{quantity}}</h4></span></a>
+      <h3>{{ cat.name }}</h3> 
+        <a href="{% url 'listing_details' cat.id %}" class="btn btn-primary">
+          <span class="badge bg-primary rounded-pill">
+            <h4>{% if cat_objs %}  {% for key, value in num_listing %} {{ key }}, {{ value }} {% endfor %}  {% endif %}</h4>
+          </span>
+        </a>
     </li>
     {% endfor %}
   </ul>
- 
 {% endblock %}

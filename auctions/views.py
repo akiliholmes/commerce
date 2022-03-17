@@ -1,3 +1,7 @@
+from multiprocessing import context
+from operator import attrgetter
+from unicodedata import category
+from wsgiref.util import request_uri
 from django.db.models import Count
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -7,6 +11,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
 from django.forms import ModelForm
+from itertools import chain
 
 from .models import *
 
@@ -115,12 +120,26 @@ def listing_details(request, listing_id):
     })
 
 
+
+# def get_all_documents_sorted():
+    
+#     all_cat_totals = sorted(
+#     chain(cat_objs, num_listing),
+#     key=attrgetter('id'), reverse=True)
+#     return all_cat_totals
+
+
+
 def all_categories(request):
-    num_listing = Listings.objects.values('categories').annotate(cat_total=Count('categories'))
+    cat_objs = Categories.objects.all()
+    num_listing = Listings.objects.all()  
+    cat_tots = Listings.objects.values('categories').annotate(cat_total=Count('categories'))
     return render(request, "auctions/all-categories.html", {
-        "categories": Categories.objects.all(),
-        "quantity": num_listing
-        })
+        "cat_objs": cat_objs,
+        'num_listing':num_listing,
+        'cat_tots':cat_tots
+    })
+
 
 def watchlist(request):
     pass
